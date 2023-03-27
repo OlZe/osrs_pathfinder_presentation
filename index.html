@@ -81,16 +81,16 @@
 				<ul>
 					<li>Begehbare Positionen</li>
 					<ul>
-						<li>Cache-Daten</li>
+						<li>aus Cache-Daten</li>
 					</ul>
 					<li>Teleportationen</li>
 					<ul>
-						<li>WikiMaps</li>
+						<li>aus WikiMaps</li>
 					</ul>
 					<li>Transportwege</li>
 					<ul>
-						<li>WikiMaps</li>
-						<li>Shortest Path</li>
+						<li>aus WikiMaps</li>
+						<li>und aus Shortest Path</li>
 					</ul>
 				</ul>
 			</section>
@@ -98,6 +98,114 @@
 			<section>
 				<h2>Projektstruktur</h2>
 				<img src="media/komponentendiagram.svg" alt="komponentendiagram">
+			</section>
+
+
+			<section>
+				<h2>Navigationsdatensatz</h2>
+				<h4>movement.csv</h4>
+				<pre><code data-trim class="language-armasm">
+					#x,y,z,northBlocked,eastBlocked,southBlocked,westBlocked
+					3685,3393,0,false,false,false,false
+				</code></pre>
+				<h4>teleports.csv</h4>
+				<pre><code data-trim class="language-armasm">
+					#x,y,z,duration,title
+					2653,3443,0,4,Combat bracelet: Ranging Guild
+				</code></pre>
+				<h4>transport.csv</h4>
+				<pre><code data-trim class="language-armasm">
+					#fromX,fromY,fromZ,toX,toY,toZ,duration,title
+					3828,9463,0,3829,3061,0,1,Climb-up Staircase 5269
+				</code></pre>
+			</section>
+
+			<section>
+				<h2>Movement Dumper</h2>
+				<ul>
+					<li>Cache-Daten</li>
+					<li>Begehbarkeit einer Position</li>
+					<li>Bestimmung erreichbarer Positionen</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Cache-Daten</h2>
+				<img src="media/runelite_class_diagram.svg" alt="RuneLite Klassendiagramm">
+			</section>
+
+			<section>
+				<h2>Begehbarkeit laut WikiMaps</h2>
+				<small>
+				<table>
+					<thead>
+						<tr>
+							<th>Location<br>#getType</th>
+							<th>Location<br>#getOrientation</th>
+							<th>Begehbarkeit</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td rowspan="4">0</td>
+							<td>0</td>
+							<td>Westen blockiert</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>Norden blockiert</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>Osten blockiert</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>Süden blockiert</td>
+						</tr>
+						<tr>
+							<td rowspan="4">2</td>
+							<td>0</td>
+							<td>Nordwesten blockiert</td>
+						</tr>
+						<tr>
+							<td>1</td>
+							<td>Nordosten blockiert</td>
+						</tr>
+						<tr>
+							<td>2</td>
+							<td>Südosten blockiert</td>
+						</tr>
+						<tr>
+							<td>3</td>
+							<td>Südwesten blockiert</td>
+						</tr>
+						<tr>
+							<td>9</td>
+							<td>beliebig</td>
+							<td>Position blockiert</td>
+						</tr>
+						<tr>
+							<td>10</td>
+							<td>Objekt-<br>Orientiereung</td>
+							<td>Objekt blockiert Position(en)</td>
+						</tr>
+						<tr>
+							<td>sonst</td>
+							<td>beliebig</td>
+							<td>begehbar</td>
+						</tr>
+					</tbody>
+				</table>
+				</small>
+			</section>
+
+			<section>
+				<h2>Reverse-Engineering</h2>
+				<ul>
+					<li>Untersuchung von <code>Location#getType</code></li>
+					<li>Untersuchung von <code>ObjectDefintion</code></li>
+				</ul>
 			</section>
 		</div>
 	</div>
