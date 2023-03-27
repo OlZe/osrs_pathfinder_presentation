@@ -137,66 +137,66 @@
 			<section>
 				<h2>Begehbarkeit laut WikiMaps</h2>
 				<small>
-				<table>
-					<thead>
-						<tr>
-							<th>Location<br>#getType</th>
-							<th>Location<br>#getOrientation</th>
-							<th>Begehbarkeit</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td rowspan="4">0</td>
-							<td>0</td>
-							<td>Westen blockiert</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Norden blockiert</td>
-						</tr>
-						<tr>
-							<td>2</td>
-							<td>Osten blockiert</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>Süden blockiert</td>
-						</tr>
-						<tr>
-							<td rowspan="4">2</td>
-							<td>0</td>
-							<td>Nordwesten blockiert</td>
-						</tr>
-						<tr>
-							<td>1</td>
-							<td>Nordosten blockiert</td>
-						</tr>
-						<tr>
-							<td>2</td>
-							<td>Südosten blockiert</td>
-						</tr>
-						<tr>
-							<td>3</td>
-							<td>Südwesten blockiert</td>
-						</tr>
-						<tr>
-							<td>9</td>
-							<td>beliebig</td>
-							<td>Position blockiert</td>
-						</tr>
-						<tr>
-							<td>10</td>
-							<td>Objekt-<br>Orientiereung</td>
-							<td>Objekt blockiert Position(en)</td>
-						</tr>
-						<tr>
-							<td>sonst</td>
-							<td>beliebig</td>
-							<td>begehbar</td>
-						</tr>
-					</tbody>
-				</table>
+					<table>
+						<thead>
+							<tr>
+								<th>Location<br>#getType</th>
+								<th>Location<br>#getOrientation</th>
+								<th>Begehbarkeit</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td rowspan="4">0</td>
+								<td>0</td>
+								<td>Westen blockiert</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Norden blockiert</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Osten blockiert</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Süden blockiert</td>
+							</tr>
+							<tr>
+								<td rowspan="4">2</td>
+								<td>0</td>
+								<td>Nordwesten blockiert</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>Nordosten blockiert</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Südosten blockiert</td>
+							</tr>
+							<tr>
+								<td>3</td>
+								<td>Südwesten blockiert</td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td>beliebig</td>
+								<td>Position blockiert</td>
+							</tr>
+							<tr>
+								<td>10</td>
+								<td>Objekt-<br>Orientiereung</td>
+								<td>Objekt blockiert Position(en)</td>
+							</tr>
+							<tr>
+								<td>sonst</td>
+								<td>beliebig</td>
+								<td>begehbar</td>
+							</tr>
+						</tbody>
+					</table>
 				</small>
 			</section>
 
@@ -205,6 +205,343 @@
 				<ul>
 					<li>Untersuchung von <code>Location#getType</code></li>
 					<li>Untersuchung von <code>ObjectDefintion</code></li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Location#getType</h2>
+				<pre><code data-trim class="language-Java">
+				List&lt;Position&gt; positionsWithLocType22Only = regions.stream()
+					.flatMap(region −> region.getLocations().stream())
+					.collect(Collectors.groupingBy(Location::getPosition))
+					.entrySet().stream()
+					.filter(posWithLocs −> posWithLocs.getValue().size() == 1)
+					.filter(posWithLocs −> posWithLocs.getValue().get(0).getType() == 22)
+					.map(Map.Entry::getKey)
+					.collect(Collectors.toList());
+				</code></pre>
+			</section>
+
+			<section>
+				<h2>ObjectDefinition#getInteractType</h2>
+				<pre><code data-trim class="language-Java">
+					List&lt;Position&gt; posWithType10Interact0only = regions.stream()
+						.flatMap(region −> region.getLocations().stream())
+						.collect(Collectors.groupingBy(Location::getPosition))
+						.entrySet().stream()
+						.filter(posWithLocs −> posWithLocs.getValue().size() == 1)
+						.map(posWithLocs −> posWithLocs.getValue().get(0))
+						.filter(loc −> loc.getType() == 10)
+						.filter(loc −> objectManager.getObject(loc.getId()).getInteractType() == 0)
+						.map(Location::getPosition)
+						.collect(Collectors.toList());
+				</code></pre>
+			</section>
+
+			<section>
+				<h2>Bestimmung Begehbarkeit</h2>
+				<small>
+					<table>
+						<thead>
+							<tr>
+								<th>Typen</th>
+								<th>Beschreibung</th>
+								<th>Blockiert</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>0</td>
+								<td>Wand</td>
+								<td>Blockiert Rand, falls Objekt blockiert</td>
+							</tr>
+							<tr>
+								<td>1, 3</td>
+								<td>Säule an Ecke</td>
+								<td>Nein</td>
+							</tr>
+							<tr>
+								<td>2</td>
+								<td>Eckwand</td>
+								<td>Blockiert Ränder, falls Objekt blockiert</td>
+							</tr>
+							<tr>
+								<td>4, 5</td>
+								<td>Wanddekorationen</td>
+								<td>Nein</td>
+							</tr>
+							<tr>
+								<td>6, 7, 8</td>
+								<td>Nicht erkennbar</td>
+								<td>Nein</td>
+							</tr>
+							<tr>
+								<td>9</td>
+								<td>Diagonale Wand</td>
+								<td>Blockiert, falls Objekt blockiert</td>
+							</tr>
+							<tr>
+								<td>10, 11</td>
+								<td>Objekte</td>
+								<td>Blockiert, falls Objekt blockiert</td>
+							</tr>
+							<tr>
+								<td>12 - 21</td>
+								<td>Dachziegel</td>
+								<td>Blockiert, falls Objekt blockiert</td>
+							</tr>
+							<tr>
+								<td>22</td>
+								<td>Bodendekoration</td>
+								<td>Blockiert, falls Objekt blockiert</td>
+							</tr>
+						</tbody>
+					</table>
+				</small>
+			</section>
+
+			<section>
+				<h2>Bestimmung Objekt blockiert</h2>
+				<pre><code data-trim class="language-plaintext">
+					fn objectOnLocationIsBlocking(location):
+						object = Get ObjectDefinition with id location.getId()
+						If location.getType() == 22:
+							Return object.getInteractType() == 1
+						Else:
+							Return oject.getInteractType() != 0
+				</code></pre>
+			</section>
+
+			<section>
+				<h2>Bestimmung erreichbarer Positionen</h2>
+				<div
+					style="width: 100%; display: flex; flex-flow: row nowrap; align-items: center; justify-content: space-between;">
+					<div style="width:70%">
+						<ul>
+							<li>Nicht alle begehbare Positionen sind erreichbar</li>
+							<li>Undefinierte Positionen sind begehbar</li>
+							<li>Isolierte Betrachtung jeder Position nicht möglich</li>
+							<li>Lösung: Breitensuche</li>
+						</ul>
+					</div>
+					<div style="width: 25%;">
+						<img src="media/phantomfläche.png" alt="Undefinierte Bereiche">
+					</div>
+				</div>
+			</section>
+
+			<section>
+				<h2>Bestimmung erreichbarer Positionen</h2>
+				<pre><code data-trim class="language-plaintext">
+					fn extractMovementData:
+						Read teleports and transports
+						For each unvisited teleport:
+							bfs(teleport destination)
+						Return all explored positions
+
+					fn bfs(position):
+						Start breadth-first-search from position
+						If any teleport destinations are found:
+							Mark teleport as visited
+						Return explored positions
+					
+					fn neighbour(position):
+						Find positions which can be reached from position
+							by walking or by taking transports
+						Return positions
+				</code></pre>
+			</section>
+
+			<section>
+				<h2>Pathfinder backend</h2>
+				<ul>
+					<li>Bestimmt kürzeste Wege</li>
+					<li>Generiert Graphen aus Navigationsdatensatz</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Bestimmung kürzester Wege</h2>
+				<ul>
+					<li>Dijkstra's Algorithmus</li>
+					<li>Betrachtet Teleportationen nur als ersten Schritt</li>
+					<li>Nutzt eigene Klasse PriorityQueueTieByTime</li>
+				</ul>
+				<div style="display: flex; flex-flow: row nowrap; justify-content: space-between;">
+					<img src="media/pfad_zickzack.png" alt="Zick-Zack-Pfad" width="47%">
+					<img src="media/pfad_zickzack_nicht.png" alt="Normaler Pfad" width="47%">
+				</div>
+			</section>
+
+			<section>
+				<h2>Generierung Graphenstruktur</h2>
+				<img src="media/graph_erstellung.svg" alt="Erstellung eines Graphen">
+			</section>
+
+			<section>
+				<h2>pathfinder frontend live demo</h2>
+			</section>
+
+			<section>
+				<h2>Performanz von movement dumper</h2>
+				<table>
+					<tbody>
+						<tr>
+							<td>Laufzeit</td>
+							<td>~200 Sekunden</td>
+						</tr>
+						<tr>
+							<td>Arbeitsspeicher-Auslastung</td>
+							<td>~1,3 GB</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section>
+				<h2>Größe von Navigationsdatensatz</h2>
+				<table>
+					<tbody>
+						<tr>
+							<td>Erreichbare Positionen</td>
+							<td>971.791</td>
+						</tr>
+						<tr>
+							<td>Teleportationen</td>
+							<td>197</td>
+						</tr>
+						<tr>
+							<td>Transportwege</td>
+							<td>6.576</td>
+						</tr>
+					</tbody>
+				</table>
+			</section>
+
+			<section>
+				<h2>Performanz pathfinder backend</h2>
+				<small>
+					<table>
+						<tbody>
+							<tr>
+								<td>Startzeit</td>
+								<td>~9 Sekunden</td>
+							</tr>
+							<tr>
+								<td>Arbeitsspeicher-Auslastung</td>
+								<td>2,8 GB</td>
+							</tr>
+						</tbody>
+					</table>
+					<br>
+					<table>
+						<thead>
+							<tr>
+								<th>Pfadlänge</th>
+								<th>Zeit zum Berechnen</th>
+								<th>Erforschte Positionen</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>0</td>
+								<td>0ms</td>
+								<td>0</td>
+							</tr>
+							<tr>
+								<td>5</td>
+								<td>1ms</td>
+								<td>460</td>
+							</tr>
+							<tr>
+								<td>20</td>
+								<td>113ms</td>
+								<td>52.767</td>
+							</tr>
+							<tr>
+								<td>50</td>
+								<td>894ms</td>
+								<td>319.378</td>
+							</tr>
+							<tr>
+								<td>100</td>
+								<td>2365ms</td>
+								<td>731.347</td>
+							</tr>
+							<tr>
+								<td>200</td>
+								<td>3696ms</td>
+								<td>915.318</td>
+							</tr>
+							<tr>
+								<td>500</td>
+								<td>3700ms</td>
+								<td>970.988</td>
+							</tr>
+						</tbody>
+					</table>
+				</small>
+			</section>
+
+
+			<section>
+				<h2>Fehlende Bereiche</h2>
+				<img src="media/nicht_begehbare_bereiche.png" alt="Nicht navigierbare Bereiche">
+			</section>
+
+			<section>
+				<h2>Beispiele von Pfaden</h2>
+				<img src="media/pfad5.png" alt="Der schnellste Pfad in die Stadt Ardougne">
+			</section>
+
+			<section>
+				<h2>Beispiele von Pfaden</h2>
+				<img src="media/pfad6.png" alt="Der zweit-schnellste Pfad in die Stadt Ardougne">
+			</section>
+
+			<section>
+				<h2>Beispiele von Pfaden</h2>
+				<img src="media/pfad7.png" alt="Der zwölfst-schnellste Pfad in die Stadt Ardougne">
+			</section>
+
+			<section>
+				<h2>Beispiele von Pfaden</h2>
+				<img src="media/pfad9.png" alt="Laufweg zur Farming Guild">
+			</section>
+
+			<section>
+				<h2>Zusammenfassung</h2>
+				<small>
+					<ul>
+						<li>movement dumper</li>
+						<ul>
+							<li>Gemischter Datensatz für Teleportationen und Transportwege</li>
+							<li>Reverse-Engineering</li>
+							<li>Breitensuche</li>
+						</ul>
+						<li>pathfinder backend</li>
+						<ul>
+							<li>Generiert Graphenstruktur</li>
+							<li>Djikstra's Algorithmus</li>
+						</ul>
+						<li>pathfinder frontend</li>
+						<ul>
+							<li>Basiert auf bestehende Webapplikation</li>
+							<li>Tätigt Navigationsanfragen</li>
+							<li>Visualisiert Pfade</li>
+						</ul>
+					</ul>
+				</small>
+			</section>
+
+			<section>
+				<h2>Ausblick</h2>
+				<ul>
+					<li>Pathfinder backend öffentlich bereitstellen</li>
+					<li>Plattform vieler kreativer Projekte</li>
+					<li>Automatische Generierung des Navigationsdatensatzes</li>
+					<li>Teleportations- und Transportdaten verbessern</li>
+					<li>Weitere Algorithmen zur Pfadermittlung prüfen</li>
 				</ul>
 			</section>
 		</div>
