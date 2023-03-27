@@ -1,40 +1,124 @@
 <!doctype html>
 <html lang="en">
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<link rel="stylesheet" href="dist/reset.css">
-		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+	<title>OSRS Navigator Präsentation</title>
 
-		<!-- Theme used for syntax highlighted code -->
-		<link rel="stylesheet" href="plugin/highlight/monokai.css">
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
+	<link rel="stylesheet" href="dist/reset.css">
+	<link rel="stylesheet" href="dist/reveal.css">
+	<link rel="stylesheet" href="dist/theme/white.css">
+
+	<!-- Theme used for syntax highlighted code -->
+	<link rel="stylesheet" href="plugin/highlight/monokai.css">
+</head>
+
+<body>
+	<div class="reveal">
+		<div class="slides">
+			<section>
+				<h1>OSRS Navigator</h1>
+				<img src="media/frontend_screenshot.png" alt="Screenshot" width="50%">
+			</section>
+			<section>
+				<!-- Size of Client when video recording: 1378 x 846px -->
+				<section>
+					<h2>OSRS Live Demo</h2>
+				</section>
+				<section>
+					<video src="media/laufschritte.mp4" loop muted></video>
+				</section>
+				<section>
+					<video src="media/teleport.mp4" loop muted></video>
+				</section>
+				<section>
+					<video src="media/transport1.mp4" loop muted></video>
+				</section>
+				<section>
+					<video src="media/transport2.mp4" loop muted></video>
+				</section>
+			</section>
+
+			<section>
+				<h2>Pfade</h2>
+				<img src="media/bewegungsmöglichkeiten.svg" alt="Pfade mit unterschiedlichen Bewegungsmöglichkeiten"
+					width="">
+			</section>
+
+			<section>
+				<h2>Zustände einer Position</h2>
+				<img src="media/positions_zustände.svg" alt="Zustand einer Position" width="">
+				<h2>Diagonales Laufen</h2>
+				<img src="media/laufen_diagonal.svg" alt="Diagonales Laufen" width="">
+			</section>
+
+			<section>
+				<h2>Relevante Projekte</h2>
+				<ul>
+					<li><a href="https://runelite.net/">RuneLite</a></li>
+					<li><a href="https://runelite.net/plugin-hub/show/shortest-path">Shortest Path</a></li>
+					<li><a href="https://mejrs.github.io/osrs.html">Karte als Webapplikation</a></li>
+					<li><a href="https://oldschool.runescape.wiki/">OSRS Wiki und WikiMaps</a></li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Anforderungen</h2>
+				<ul>
+					<li>öffentlicher Dienst</li>
+					<li>Client-agnostisch</li>
+					<li>Bearbeitet Navigationsanfragen</li>
+					<li>Alle Bewegungen unterstützen</li>
+					<li>Ausschließen von Bewegungen unterstützen</li>
+					<li>Effizient</li>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Datenquellen</h2>
+				<ul>
+					<li>Begehbare Positionen</li>
+					<ul>
+						<li>Cache-Daten</li>
+					</ul>
+					<li>Teleportationen</li>
+					<ul>
+						<li>WikiMaps</li>
+					</ul>
+					<li>Transportwege</li>
+					<ul>
+						<li>WikiMaps</li>
+						<li>Shortest Path</li>
+					</ul>
+				</ul>
+			</section>
+
+			<section>
+				<h2>Projektstruktur</h2>
+				<img src="media/komponentendiagram.svg" alt="komponentendiagram">
+			</section>
 		</div>
+	</div>
 
-		<script src="dist/reveal.js"></script>
-		<script src="plugin/notes/notes.js"></script>
-		<script src="plugin/markdown/markdown.js"></script>
-		<script src="plugin/highlight/highlight.js"></script>
-		<script>
-			// More info about initialization & config:
-			// - https://revealjs.com/initialization/
-			// - https://revealjs.com/config/
-			Reveal.initialize({
-				hash: true,
+	<script src="dist/reveal.js"></script>
+	<script src="plugin/notes/notes.js"></script>
+	<script src="plugin/markdown/markdown.js"></script>
+	<script src="plugin/highlight/highlight.js"></script>
+	<script>
+		// More info about initialization & config:
+		// - https://revealjs.com/initialization/
+		// - https://revealjs.com/config/
+		Reveal.initialize({
+			hash: true,
 
-				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
-			});
-		</script>
-	</body>
+			// Learn about plugins: https://revealjs.com/plugins/
+			plugins: [RevealMarkdown, RevealHighlight, RevealNotes],
+
+			autoPlayMedia: true
+		});
+	</script>
+</body>
+
 </html>
